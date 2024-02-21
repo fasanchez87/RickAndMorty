@@ -1,18 +1,14 @@
 package com.me.rickmorty.app.di
 
 import android.content.Context
-import com.google.gson.Gson
-import com.me.rickmorty.Navigator
+import com.me.rickmorty.util.Navigator
 import com.me.rickmorty.app.App
 import com.squareup.moshi.Moshi
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import org.koin.dsl.module
-import retrofit2.Converter
-import retrofit2.converter.gson.GsonConverterFactory
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -43,20 +39,4 @@ class Module {
         return App.moshiSingleton.build()
     }
 }
-//
-//
-//val appModule = module {
-//
-//    single {
-//        Navigator(get())
-//    }
-//
-//    single<Converter.Factory> {
-//        val gson = get<Gson>()
-//        GsonConverterFactory.create(gson)
-//    }
-//
-//    single { App.gsonSingleton.create() }
-//
-//    single { App.moshiSingleton.build() }
-//}
+

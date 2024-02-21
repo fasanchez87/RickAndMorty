@@ -1,9 +1,9 @@
 package com.me.rickmorty.app.di
 
-import com.me.rickmorty.BaseRequest
-import com.me.rickmorty.ConfigurationRestClient
-import com.me.rickmorty.ConfigurationRestClientImpl
-import com.me.rickmorty.ExceptionMapper
+import com.me.rickmorty.util.BaseRequest
+import com.me.rickmorty.util.ConfigurationRestClient
+import com.me.rickmorty.util.ConfigurationRestClientImpl
+import com.me.rickmorty.util.ExceptionMapper
 import com.me.rickmorty.data.repository.network.api.CharacterApi
 import dagger.Module
 import dagger.Provides

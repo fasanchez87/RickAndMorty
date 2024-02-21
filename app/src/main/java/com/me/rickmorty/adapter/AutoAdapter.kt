@@ -1,7 +1,7 @@
 package com.me.rickmorty.adapter
 import androidx.annotation.LayoutRes
-import com.me.rickmorty.BaseClickHandler
-import com.me.rickmorty.ItemViewable
+import com.me.rickmorty.util.BaseClickHandler
+import com.me.rickmorty.util.ItemViewable
 import com.me.rickmorty.BR
 
 open class AutoAdapter<T : ItemViewable>(

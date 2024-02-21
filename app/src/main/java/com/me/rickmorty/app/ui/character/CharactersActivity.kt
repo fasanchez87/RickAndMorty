@@ -2,13 +2,14 @@ package com.me.rickmorty.app.ui.character
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import com.me.rickmorty.BaseActivity
-import com.me.rickmorty.BaseToolbarActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.me.rickmorty.util.BaseToolbarActivity
 import com.me.rickmorty.R
+import com.me.rickmorty.adapter.AutoAdapter
 import com.me.rickmorty.databinding.ActivityCharactersBinding
+import com.me.rickmorty.domain.model.CharacterModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,10 +23,17 @@ class CharactersActivity : BaseToolbarActivity() {
         }
     }
 
+    private val adapter = AutoAdapter<CharacterModel> {
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
+
+        binding.rvCharacters.adapter = adapter
+        binding.rvCharacters.layoutManager = LinearLayoutManager(this)
 
         title = getString(R.string.characters)
 
@@ -34,7 +42,7 @@ class CharactersActivity : BaseToolbarActivity() {
         viewModel.getCharacters().observe(
             this@CharactersActivity,
             getResultObjectObserver({ data ->
-                data
+                adapter.update(data)
                 hideLoading()
             })
         )

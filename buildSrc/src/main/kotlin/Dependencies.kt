@@ -1,5 +1,3 @@
-import org.gradle.api.Project
-import java.util.Properties
 
 object Dependencies {
 
@@ -12,16 +10,11 @@ object Dependencies {
         const val versionCode = 1
     }
 
-    val room_version = "2.5.0"
-    val hilt = "2.44"
+    private const val room_version = "2.5.0"
+    private const val hilt = "2.44"
 
     val appDependencies = mutableListOf<String>().apply {
 
-        add("com.google.firebase:firebase-config-ktx")
-        add("com.google.firebase:firebase-analytics-ktx")
-        add("com.google.firebase:firebase-crashlytics")
-        add("com.google.firebase:firebase-messaging-ktx")
-        add("com.google.firebase:firebase-dynamic-links-ktx")
         add("androidx.compose.ui:ui")
         add("androidx.compose.ui:ui-graphics")
         add("androidx.compose.ui:ui-tooling-preview")
@@ -31,11 +24,6 @@ object Dependencies {
         add("androidx.lifecycle:lifecycle-reactivestreams-ktx:$vlifecycle")
         add("androidx.lifecycle:lifecycle-livedata-ktx:$vlifecycle")
         add("androidx.lifecycle:lifecycle-runtime-ktx:$vlifecycle")
-
-        val vkoin = "3.2.2"
-        add("io.insert-koin:koin-test:$vkoin")
-        add("io.insert-koin:koin-test-junit4:$vkoin")
-        add("io.insert-koin:koin-android:$vkoin")
 
         val vglide = "4.14.1"
         add("com.github.bumptech.glide:glide:$vglide")
@@ -52,12 +40,6 @@ object Dependencies {
 
         val crypto = "1.1.0-alpha03"
         add("androidx.security:security-crypto-ktx:$crypto")
-
-        val peko = "2.2.0"
-        add("com.markodevcic:peko:$peko")
-
-        val photo_view = "2.3.0"
-        add("com.github.chrisbanes:PhotoView:$photo_view")
 
         val moshi = "1.14.0"
         add("com.squareup.moshi:moshi-kotlin:$moshi")
@@ -76,9 +58,6 @@ object Dependencies {
 
         val core_ktx = "1.9.0"
         add("androidx.core:core-ktx:${core_ktx}")
-
-        val page_indicator = "1.0.3"
-        add("com.romandanylyk:pageindicatorview:${page_indicator}")
 
         val lifecycle_runtime = "2.6.2"
         add("androidx.lifecycle:lifecycle-runtime-ktx:${lifecycle_runtime}")
@@ -101,14 +80,8 @@ object Dependencies {
         val timber = "5.0.1"
         add("com.jakewharton.timber:timber:${timber}")
 
-        val flexible_divider_version = "1.4.0"
-        add("com.yqritc:recyclerview-flexibledivider:${flexible_divider_version}")
-
         val ktx_lifecycle = "2.5.1"
         add("androidx.lifecycle:lifecycle-viewmodel-ktx:${ktx_lifecycle}")
-
-        val runtimePermission = "1.1.2"
-        add("com.github.florent37:runtime-permission-kotlin:${runtimePermission}")
 
         val gms = "20.3.0"
         add("com.google.android.gms:play-services-auth:${gms}")
@@ -206,7 +179,6 @@ object Dependencies {
         add("com.linkedin.dexmaker:dexmaker-mockito-inline-extended:2.28.1")
         add("androidx.test:core-ktx:1.4.0")
         add("androidx.test.ext:junit-ktx:1.1.3")
-
     }
 
     val debugImplementation = mutableListOf<String>().apply {
@@ -227,13 +199,4 @@ object Dependencies {
     }
 
     fun getVersionName(): String = "VersionName_" + MainSettings.versionName + "_" + MainSettings.versionCode
-
-    fun getLocalProperties(project: Project): Properties {
-        val localProperties = java.util.Properties()
-        project.file("local.properties").let {
-            if (it.exists())
-                localProperties.load(java.io.FileInputStream(it))
-        }
-        return localProperties
-    }
 }

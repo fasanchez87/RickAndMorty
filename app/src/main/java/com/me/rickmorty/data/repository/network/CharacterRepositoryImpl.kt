@@ -1,6 +1,6 @@
 package com.me.rickmorty.data.repository.network
 
-import com.me.rickmorty.BaseRequest
+import com.me.rickmorty.util.BaseRequest
 import com.me.rickmorty.data.mapper.CharacterMapper
 import com.me.rickmorty.data.repository.network.api.CharacterApi
 import com.me.rickmorty.domain.model.CharacterModel

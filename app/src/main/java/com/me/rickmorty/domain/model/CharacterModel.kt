@@ -1,9 +1,9 @@
 package com.me.rickmorty.domain.model
 
 import android.os.Parcelable
-import com.me.rickmorty.ItemViewable
+import com.me.rickmorty.util.ItemViewable
 import com.me.rickmorty.R
-import com.me.rickmorty.parseFullDate
+import com.me.rickmorty.util.parseFullDate
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize

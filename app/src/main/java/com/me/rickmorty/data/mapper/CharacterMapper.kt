@@ -1,6 +1,6 @@
 package com.me.rickmorty.data.mapper
 
-import com.me.rickmorty.IMapper
+import com.me.rickmorty.util.IMapper
 import com.me.rickmorty.data.entity.CharacterEntity
 import com.me.rickmorty.domain.model.CharacterModel
 

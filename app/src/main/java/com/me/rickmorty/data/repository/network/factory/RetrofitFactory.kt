@@ -1,6 +1,6 @@
 package com.me.rickmorty.data.repository.network.factory
 
-import com.me.rickmorty.ConfigurationRestClient
+import com.me.rickmorty.util.ConfigurationRestClient
 import okhttp3.CertificatePinner
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

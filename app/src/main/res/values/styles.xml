@@ -356,16 +356,4 @@
 
     <style name="AppTheme.OnlyFrameLayout" />
 
-    <style name="AppTheme.PageIndicatorView">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="piv_animationType">slide</item>
-        <item name="piv_dynamicCount">true</item>
-        <item name="piv_interactiveAnimation">true</item>
-        <item name="piv_selectedColor">@color/color_main</item>
-        <item name="piv_unselectedColor">@color/color_main_alpha50</item>
-        <item name="piv_count">0</item>
-        <item name="piv_padding">5dp</item>
-        <item name="piv_radius">4dp</item>
-    </style>
 </resources>

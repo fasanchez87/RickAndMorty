@@ -1,10 +1,10 @@
 package com.me.rickmorty.app.di
 
-import com.me.rickmorty.BaseRequest
-import com.me.rickmorty.ConfigurationRestClient
-import com.me.rickmorty.ConfigurationRestClientImpl
-import com.me.rickmorty.ExceptionMapper
-import com.me.rickmorty.WrapperResponseMapper
+import com.me.rickmorty.util.BaseRequest
+import com.me.rickmorty.util.ConfigurationRestClient
+import com.me.rickmorty.util.ConfigurationRestClientImpl
+import com.me.rickmorty.util.ExceptionMapper
+import com.me.rickmorty.util.WrapperResponseMapper
 import com.me.rickmorty.data.repository.network.factory.BaseRequestFactory
 import com.me.rickmorty.data.repository.network.factory.RetrofitFactory
 import com.me.rickmorty.data.repository.network.interceptor.ResponseInterceptor

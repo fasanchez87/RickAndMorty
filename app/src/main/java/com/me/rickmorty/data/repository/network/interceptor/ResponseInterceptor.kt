@@ -1,6 +1,6 @@
 package com.me.rickmorty.data.repository.network.interceptor
-import WrapperIOException
-import com.me.rickmorty.ConfigurationRestClient
+import com.me.rickmorty.util.WrapperIOException
+import com.me.rickmorty.util.ConfigurationRestClient
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response

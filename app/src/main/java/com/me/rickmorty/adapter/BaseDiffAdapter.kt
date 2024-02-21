@@ -2,7 +2,7 @@ package com.me.rickmorty.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.me.rickmorty.Idable
+import com.me.rickmorty.util.Idable
 
 abstract class BaseDiffAdapter<T : BaseAdapter.BaseViewHolder, K : Idable>(
     open var data: MutableList<K> = mutableListOf(),
