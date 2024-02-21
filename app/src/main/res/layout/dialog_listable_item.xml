@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.me.rickmorty.Listable" />
+
+        <variable
+            name="selected"
+            type="androidx.lifecycle.LiveData&lt;java.util.List&lt;com.me.rickmorty.Listable>>" />
+
+        <variable
+            name="clickHandler"
+            type="com.me.rickmorty.adapter.ListableAdapter.ClickHandler" />
+
+    </data>
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@android:id/text1"
+        selected="@{ selected.contains(item) }"
+        style="@style/AppTheme.Dialog.Item"
+        android:drawableLeft="@{ item.getIcon(context) }"
+        android:onClick="@{() -> clickHandler.onListableClick(item)}"
+        android:text="@{item.getString(context)}" />
+
+</layout>

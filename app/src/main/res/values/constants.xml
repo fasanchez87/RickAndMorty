@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="dialog_width_factor" type="dimen" format="float">0.8</item>
+    <item name="dialog_height_factor" type="dimen" format="float">-1</item>
+
+    <item name="dialog_bottomsheet_width_factor" type="dimen" format="float">1</item>
+    <item name="dialog_bottomsheet_height_factor" type="dimen" format="float">-1</item>
+</resources>

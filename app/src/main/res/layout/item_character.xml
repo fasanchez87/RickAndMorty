@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+<!--        <import type="com.eventelling.app.domain.model.NotificationModel" />-->
+
+<!--        <variable-->
+<!--            name="item"-->
+<!--            type="NotificationModel" />-->
+
+<!--        <variable-->
+<!--            name="clickHandler"-->
+<!--            type="com.zappstudio.zappbase.app.ui.listener.BaseClickHandler&lt;NotificationModel>" />-->
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/color0"
+        android:elevation="8dp"
+        app:cardCornerRadius="8dp">
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</layout>

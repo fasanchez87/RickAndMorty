@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">RickyMorty</string>
+    <string name="error">Error</string>
+    <string name="unexpected_error">Ocurrió un error inesperado</string>
+    <string name="no_internet">Comprueba tu conexión a internet y vuelve a intentarlo</string>
+    <string name="accept">Aceptar</string>
+    <string name="reject">Rechazar</string>
+    <string name="must_update_app">Existe una versión más reciente de la aplicación y es necesario actualizarla</string>
+    <string name="update_available">Actualizar aplicación</string>
+    <string name="characters">Characters</string>
+</resources>

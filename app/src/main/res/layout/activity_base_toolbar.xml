@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color0">
+
+        <FrameLayout
+            android:id="@+id/flContainerBaseToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:isScrollContainer="true" />
+
+        <ImageView
+            android:id="@+id/toolbar_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/toolbar"
+            android:background="@color/color0"
+            android:visibility="gone" />
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/AppTheme.ActionBar"
+            android:theme="@style/AppTheme.ActionBarTheme" />
+
+    </RelativeLayout>
+
+</layout>

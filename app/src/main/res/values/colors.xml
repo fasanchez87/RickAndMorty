@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_main">#009998</color>
+    <color name="color_main_alpha50">#80009998</color>
+    <color name="color_main_alpha30">#4D009998</color>
+    <color name="color_main_alpha10">#1A009998</color>
+    <color name="color0">#FFFFFF</color>
+    <color name="color00">#000000</color>
+    <color name="color1">#F4F4F4</color>
+    <color name="color2">#FF8A1F</color>
+    <color name="color3">#4CAF50</color>
+    <color name="color4">#FB5252</color>
+    <color name="color_gray_button">#ABABAB</color>
+    <color name="transparent">#00000000</color>
+    <color name="color00_alpha30">#4D000000</color>
+    <color name="color00_alpha50">#80000000</color>
+    <color name="color00_alpha70">#B3000000</color>
+    <color name="color00_alpha20">#33000000</color>
+    <color name="color0_alpha15">#26FFFFFF</color>
+    <color name="color0_alpha30">#4DFFFFFF</color>
+    <color name="color0_alpha50">#80FFFFFF</color>
+    <color name="color0_alpha70">#B3FFFFFF</color>
+    <color name="color1_alpha50">#80F4F4F4</color>
+    <color name="color_loading_bg">#59F3F3F3</color>
+</resources>

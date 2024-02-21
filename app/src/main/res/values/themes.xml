@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorAccent">@color/color_main</item>
+        <item name="colorButtonNormal">@color/color0</item>
+        <item name="colorPrimary">@color/color_main</item>
+        <item name="colorPrimaryVariant">@color/color0</item>
+        <item name="colorOnPrimary">@color/color00</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/color1</item>
+        <item name="colorSecondaryVariant">@color/color0</item>
+        <item name="colorOnSecondary">@color/color00</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/color1</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- Customize your theme here. -->
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="actionOverflowButtonStyle">@style/ActionOverflowButtonStyle</item>
+    </style>
+
+    <style name="AppTheme.FullScreenActivity" parent="AppTheme">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+</resources>
