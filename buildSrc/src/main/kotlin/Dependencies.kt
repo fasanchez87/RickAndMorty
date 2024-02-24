@@ -6,8 +6,8 @@ object Dependencies {
         const val compileSdk = 34
         const val minSdk = 26
         const val applicationId = "com.me.rickmorty"
-        const val versionName = "0.0.1"
-        const val versionCode = 1
+        const val versionName = "1.0.1"
+        const val versionCode = 2
     }
 
     private const val room_version = "2.5.0"
