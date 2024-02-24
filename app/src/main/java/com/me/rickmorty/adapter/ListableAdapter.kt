@@ -3,7 +3,7 @@ package com.me.rickmorty.adapter
 import androidx.lifecycle.LiveData
 import com.me.rickmorty.R
 import com.me.rickmorty.BR
-import com.me.rickmorty.util.Idable
+import com.me.rickmorty.util.tools.Idable
 
 open class ListableAdapter(
     private val selected: LiveData<List<Idable>>?,

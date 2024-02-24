@@ -93,6 +93,14 @@ object Dependencies {
 
         val test_core = "1.4.0"
         add("androidx.test:core:${test_core}")
+
+        val paging = "3.0.0"
+        add("androidx.paging:paging-runtime-ktx:${paging}")
+
+        val coil = "1.4.0"
+        add("io.coil-kt:coil-compose:${coil}")
+
+
     }
 
     val appAnnotationProcessor = mutableListOf<String>().apply {
@@ -146,8 +154,11 @@ object Dependencies {
         add("androidx.arch.core:core-testing:2.1.0")
         add("androidx.test.ext:junit-ktx:1.1.3")
         add("androidx.test:core-ktx:1.4.0")
-        add("org.robolectric:robolectric:4.9")
         add("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+        add("io.mockk:mockk:1.12.0")
+        add("org.robolectric:robolectric:4.9")
+        add("com.google.truth:truth:1.1.3")
+        add("com.google.dagger:hilt-android-testing:$hilt")
     }
 
     val androidTestImplementation = mutableListOf<String>().apply {
@@ -179,6 +190,8 @@ object Dependencies {
         add("com.linkedin.dexmaker:dexmaker-mockito-inline-extended:2.28.1")
         add("androidx.test:core-ktx:1.4.0")
         add("androidx.test.ext:junit-ktx:1.1.3")
+        add("androidx.test.espresso:espresso-intents:3.4.0")
+        add("io.mockk:mockk:1.12.0")
     }
 
     val debugImplementation = mutableListOf<String>().apply {

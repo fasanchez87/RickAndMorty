@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <import type="com.me.rickmorty.domain.model.CharacterModel" />
-
         <variable
             name="item"
-            type="CharacterModel" />
+            type="com.me.rickmorty.domain.model.CharacterModel" />
+
+        <variable
+            name="specie"
+            type="com.me.rickmorty.domain.model.CharacterModel.Species" />
+
+        <variable
+            name="status"
+            type="com.me.rickmorty.domain.model.CharacterModel.Status" />
 
         <variable
             name="clickHandler"
-            type="com.me.rickmorty.util.BaseClickHandler&lt;CharacterModel>" />
+            type="com.me.rickmorty.app.ui.base.BaseClickHandler" />
     </data>
 
     <androidx.cardview.widget.CardView
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/color0"
+        android:onClickListener="@{() -> clickHandler.onItemClick(item)}"
         android:elevation="8dp"
+        android:focusable="true"
         app:cardCornerRadius="8dp">
 
         <LinearLayout
@@ -38,16 +49,36 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@{item.name}"
+                        tools:text="Rick Sanchez"
+                        android:textColor="@color/color00"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
                 <TextView
-                    android:id="@+id/tvName"
+                    android:id="@+id/tvSpecie"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="@{item.name}"
-                    android:textColor="@color/color00"
+                    android:layout_marginTop="3dp"
+                    android:text="@{item.species.id}"
+                    tools:text="Alive"
+                    android:textColor="@color/color8"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -56,10 +87,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="@{item.status}"
-                    android:textColor="@color/color00"
+                    android:layout_marginTop="3dp"
+                    android:text="@{item.status.id}"
+                    tools:text="Alive"
+                    android:textColor="@{item.status.color.invoke(context)}"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvCreated"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="3dp"
+                    android:text="@{item.created}"
+                    tools:text="Alive"
+                    android:textSize="13sp" />
 
             </LinearLayout>
 

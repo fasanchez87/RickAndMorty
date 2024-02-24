@@ -1,7 +1,7 @@
 package com.me.rickmorty.data.repository.network.factory
 
-import com.me.rickmorty.util.BaseRequest
-import com.me.rickmorty.util.ConfigurationRestClient
+import com.me.rickmorty.app.ui.base.BaseRequest
+import com.me.rickmorty.util.tools.ConfigurationRestClient
 import retrofit2.Retrofit
 
 class BaseRequestFactory(

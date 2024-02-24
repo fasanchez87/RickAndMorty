@@ -14,11 +14,11 @@
 
         <variable
             name="dialogModel"
-            type="com.me.rickmorty.util.CustomDialogModel" />
+            type="com.me.rickmorty.util.tools.CustomDialogModel" />
 
         <variable
             name="clickHandler"
-            type="com.me.rickmorty.util.CustomDialog.ClickHandler" />
+            type="com.me.rickmorty.util.tools.CustomDialog.ClickHandler" />
 
         <variable
             name="text"

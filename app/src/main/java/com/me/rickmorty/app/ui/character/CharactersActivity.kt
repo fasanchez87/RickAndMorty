@@ -4,8 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.me.rickmorty.util.BaseToolbarActivity
+import com.me.rickmorty.app.ui.base.BaseToolbarActivity
 import com.me.rickmorty.R
 import com.me.rickmorty.adapter.AutoAdapter
 import com.me.rickmorty.databinding.ActivityCharactersBinding
@@ -23,8 +24,8 @@ class CharactersActivity : BaseToolbarActivity() {
         }
     }
 
-    private val adapter = AutoAdapter<CharacterModel> {
-
+    private val adapter = AutoAdapter<CharacterModel> { character ->
+        startActivity(navigator.navigateToCharacterDetail(character))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

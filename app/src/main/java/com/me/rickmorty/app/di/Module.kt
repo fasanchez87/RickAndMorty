@@ -1,7 +1,7 @@
 package com.me.rickmorty.app.di
 
 import android.content.Context
-import com.me.rickmorty.util.Navigator
+import com.me.rickmorty.util.tools.Navigator
 import com.me.rickmorty.app.App
 import com.squareup.moshi.Moshi
 import dagger.Module
