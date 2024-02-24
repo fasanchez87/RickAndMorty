@@ -1,6 +1,6 @@
 package com.me.rickmorty.data.repository.network.interceptor
-import WrapperIOException
-import com.me.rickmorty.ConfigurationRestClient
+import com.me.rickmorty.util.tools.WrapperIOException
+import com.me.rickmorty.util.tools.ConfigurationRestClient
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -46,7 +46,6 @@ class ResponseInterceptor @Inject constructor(
             }
             responseValue
         } catch (e: Throwable) {
-            // Lo envuelvo en un IOException porque Okhttp devuelve SIEMPRE un IOException cuando hay crash en los interceptors, excepto si ya es un IOException. De esta manera podemos mandar nuestra excepción de forma anidada.
             throw WrapperIOException(e)
         }
     }

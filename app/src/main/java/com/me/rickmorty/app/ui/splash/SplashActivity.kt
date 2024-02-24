@@ -3,7 +3,7 @@ package com.me.rickmorty.app.ui.splash
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import com.me.rickmorty.BaseActivity
+import com.me.rickmorty.app.ui.base.BaseActivity
 import com.me.rickmorty.databinding.ActivitySplashBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

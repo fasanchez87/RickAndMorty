@@ -14,11 +14,11 @@
 
         <variable
             name="dialogModel"
-            type="com.me.rickmorty.CustomDialogModel" />
+            type="com.me.rickmorty.util.tools.CustomDialogModel" />
 
         <variable
             name="clickHandler"
-            type="com.me.rickmorty.CustomDialog.ClickHandler" />
+            type="com.me.rickmorty.util.tools.CustomDialog.ClickHandler" />
 
         <variable
             name="text"
@@ -64,28 +64,6 @@
                 style="@style/AppTheme.Dialog.Text"
                 android:text="@{dialogModel.message}"
                 android:visibility="@{dialogModel.message!= null}" />
-
-            <ImageView
-                style="@style/AppTheme.Dialog.Icon"
-                defaultImage="@{ dialogModel.icon }"
-                android:src="@{ dialogModel.image }"
-                android:visibility="@{dialogModel.icon != null || dialogModel.image != null }" />
-
-            <EditText
-                android:id="@+id/etField"
-                style="@style/AppTheme.Dialog.EditText"
-                android:hint="@{ dialogModel.editTextHint }"
-                android:imeOptions="@{ dialogModel.editTextImeAction != null ? dialogModel.editTextImeAction : EditorInfo.IME_ACTION_UNSPECIFIED }"
-                android:inputType="@{ dialogModel.editTextInputType != null ? dialogModel.editTextInputType : InputType.TYPE_CLASS_TEXT }"
-                android:text="@={text}"
-                android:visibility="@{dialogModel.enableEditText}" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvDialog"
-                style="@style/AppTheme.Dialog.RecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{dialogModel.showRecycler}" />
 
             <FrameLayout
                 android:id="@+id/flDialog"
