@@ -13,7 +13,7 @@
         <item name="colorSecondaryVariant">@color/color0</item>
         <item name="colorOnSecondary">@color/color00</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/color1</item>
+        <item name="android:statusBarColor">@color/color0</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>

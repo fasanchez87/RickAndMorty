@@ -1,6 +1,6 @@
 package com.me.rickmorty.data.mapper
 
-import com.me.rickmorty.IMapper
+import com.me.rickmorty.util.tools.IMapper
 import com.me.rickmorty.data.entity.CharacterEntity
 import com.me.rickmorty.domain.model.CharacterModel
 
@@ -10,10 +10,10 @@ class CharacterMapper: IMapper<CharacterEntity, CharacterModel> {
             CharacterModel(
                 id,
                 name,
-                status,
-                species,
+                CharacterModel.Status.findById(status),
+                CharacterModel.Species.findById(species),
                 type,
-                gender,
+                CharacterModel.Gender.findById(gender),
                 image,
                 url,
                 CharacterModel.getDateText(created)

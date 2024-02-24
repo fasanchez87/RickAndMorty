@@ -1,8 +1,8 @@
 package com.me.rickmorty.app.di
 
-import com.me.rickmorty.BaseRequest
+import com.me.rickmorty.app.ui.base.BaseRequest
 import com.me.rickmorty.data.mapper.CharacterMapper
-import com.me.rickmorty.data.repository.network.CharacterRepository
+import com.me.rickmorty.domain.repository.CharacterRepository
 import com.me.rickmorty.data.repository.network.api.CharacterApi
 import com.me.rickmorty.data.repository.network.CharacterRepositoryImpl
 import dagger.Module
@@ -30,6 +30,3 @@ class RepositoryModule {
 
 }
 
-//val repositoryModule = module {
-//    singleOf(::CharacterRepository)
-//}

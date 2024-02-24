@@ -5,11 +5,11 @@
 
         <variable
             name="item"
-            type="com.me.rickmorty.Listable" />
+            type="com.me.rickmorty.util.tools.Idable" />
 
         <variable
             name="selected"
-            type="androidx.lifecycle.LiveData&lt;java.util.List&lt;com.me.rickmorty.Listable>>" />
+            type="androidx.lifecycle.LiveData&lt;java.util.List&lt;com.me.rickmorty.util.tools.Idable>>" />
 
         <variable
             name="clickHandler"
@@ -20,9 +20,6 @@
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@android:id/text1"
         selected="@{ selected.contains(item) }"
-        style="@style/AppTheme.Dialog.Item"
-        android:drawableLeft="@{ item.getIcon(context) }"
-        android:onClick="@{() -> clickHandler.onListableClick(item)}"
-        android:text="@{item.getString(context)}" />
+        style="@style/AppTheme.Dialog.Item" />
 
 </layout>

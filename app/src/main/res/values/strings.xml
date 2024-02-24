@@ -8,4 +8,5 @@
     <string name="must_update_app">Existe una versión más reciente de la aplicación y es necesario actualizarla</string>
     <string name="update_available">Actualizar aplicación</string>
     <string name="characters">Characters</string>
+    <string name="title_activity_detail_character">DetailCharacterActivity</string>
 </resources>

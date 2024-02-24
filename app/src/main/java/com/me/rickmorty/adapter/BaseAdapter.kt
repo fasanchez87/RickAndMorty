@@ -18,7 +18,8 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<T>() where T : BaseAdapter.
 
     open fun <T : BaseViewHolder> getViewHolder(v: View): T = BaseViewHolder(v) as T
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T = getViewHolder(LayoutInflater.from(parent.context).inflate(getLayout(viewType), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): T =
+        getViewHolder(LayoutInflater.from(parent.context).inflate(getLayout(viewType), parent, false))
 
     override fun onViewAttachedToWindow(holder: T) {
         super.onViewAttachedToWindow(holder)
@@ -30,7 +31,7 @@ abstract class BaseAdapter<T> : RecyclerView.Adapter<T>() where T : BaseAdapter.
         holder.onDetach()
     }
 
-    open class BaseViewHolder(v: View) : RecyclerView.ViewHolder(v), LifecycleOwner {
+    class BaseViewHolder(v: View) : RecyclerView.ViewHolder(v), LifecycleOwner {
         val binding: ViewDataBinding = DataBindingUtil.bind(v)!!
 
         override val lifecycle: LifecycleRegistry = LifecycleRegistry(this)
