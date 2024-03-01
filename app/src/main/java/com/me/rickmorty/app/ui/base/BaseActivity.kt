@@ -8,17 +8,17 @@ import android.view.View
 import android.view.WindowInsets
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
 import androidx.databinding.ViewDataBinding
 import com.me.rickmorty.R
 import com.me.rickmorty.app.App
 import com.me.rickmorty.databinding.ActivityBaseParentBinding
+import com.me.rickmorty.util.extensions.hasNetworkConnection
 import com.me.rickmorty.util.tools.CoreListener
 import com.me.rickmorty.util.tools.ErrorLoginException
 import com.me.rickmorty.util.tools.Navigator
-import com.me.rickmorty.util.tools.ResultEventObserver
 import com.me.rickmorty.util.tools.ResultObserver
 import com.me.rickmorty.util.tools.ShowMessageException
-import com.me.rickmorty.util.extensions.hasNetworkConnection
 import dagger.hilt.android.AndroidEntryPoint
 import java.net.UnknownHostException
 import javax.inject.Inject
@@ -75,66 +75,75 @@ abstract class BaseActivity: AppCompatActivity(), CoreListener {
         View.inflate(this, layoutResID, flContainerBase)
     }
 
+
     override fun onError(throwable: Throwable) {
         handleError(throwable) {}
     }
 
-    open fun handleError(throwable: Throwable, onDismiss: () -> Unit) {
+    open fun handleError(
+        throwable: Throwable,
+        onDismiss: () -> Unit
+    ) {
         throwable.printStackTrace()
         hideLoading()
         when (throwable) {
             is ErrorLoginException -> {
                 //navigator.navigateToLogin()?.let { startActivity(it) }
             }
-            is ShowMessageException ->
-                showPopup(
-                    throwable.title ?: resources.getString(R.string.error),
-                    throwable.text,
-                    icon = null,
-                    onDismiss = onDismiss
-                )
-            is UnknownHostException -> showPopup(
-                getString(R.string.error),
-                getString(R.string.no_internet),
-                icon = null,
-                onDismiss = onDismiss
-            )
+            is ShowMessageException -> {
+//                showPopup(
+//                    throwable.title ?: resources.getString(R.string.error),
+//                    throwable.text,
+//                    icon = null,
+//                    onDismiss = onDismiss
+//                )
+            }
+            is UnknownHostException -> {
+//                showPopup(
+//                    getString(R.string.error),
+//                    getString(R.string.no_internet),
+//                    icon = null,
+//                    onDismiss = onDismiss
+//                )
+            }
             else -> onErrorDefaultCase(throwable, onDismiss)
         }
     }
 
+
+
     open fun onErrorDefaultCase(throwable: Throwable, onDismiss: () -> Unit) {
         if (hasNetworkConnection().not()) {
-            showPopup(
-                getString(R.string.error),
-                getString(R.string.no_internet),
-                icon = null,
-                onDismiss = onDismiss
-            )
+//            showPopup(
+//                getString(R.string.error),
+//                getString(R.string.no_internet),
+//                icon = null,
+//                onDismiss = onDismiss
+//            )
         } else {
-            showPopup(
-                getString(R.string.error),
-                getString(R.string.unexpected_error),
-                icon = null,
-                onDismiss = onDismiss
-            )
+//            showPopup(
+//                getString(R.string.error),
+//                getString(R.string.unexpected_error),
+//                icon = null,
+//                onDismiss = onDismiss
+//            )
         }
     }
 
-    fun getResultEventObserver(
-        action: () -> Unit,
-        actionError: ((Throwable, _super: (Throwable) -> Unit) -> Unit)? = null
-    ) = object : ResultEventObserver(this) {
-
-        override fun onSuccess() {
-            action.invoke()
-        }
-        override fun onError(ex: Throwable) {
-            actionError?.let {
-                it(ex) { super.onError(it) }
-            } ?: super.onError(ex)
-        }
-    }
+//    fun getResultEventObserver(
+//        action: () -> Unit,
+//        actionError: ((Throwable, _super: (Throwable) -> Unit) -> Unit)? = null
+//    ) = object : ResultEventObserver(this) {
+//
+//        override fun onSuccess() {
+//            action.invoke()
+//        }
+//        override fun onError(ex: Throwable) {
+//            actionError?.let {
+//                it(ex) { super.onError(it) }
+//            } ?: super.onError(ex)
+//        }
+//    }
 
     fun <T> getResultObjectObserver(
         action: (T) -> Unit,
@@ -157,13 +166,16 @@ abstract class BaseActivity: AppCompatActivity(), CoreListener {
         }
     }
 
-    fun getResultEventEmptyObserver(hideLoading: Boolean = true) =
-        object : ResultEventObserver(this) {
-            override fun onSuccess() {
-                if (hideLoading) hideLoading()
-            }
-        }
 
+
+//    fun getResultEventEmptyObserver(hideLoading: Boolean = true) =
+//        object : ResultEventObserver(this) {
+//            override fun onSuccess() {
+//                if (hideLoading) hideLoading()
+//            }
+//        }
+
+    @Composable
     override fun showLoading() {
         frmProgress.visibility = View.VISIBLE
     }
@@ -172,75 +184,75 @@ abstract class BaseActivity: AppCompatActivity(), CoreListener {
         frmProgress.visibility = View.GONE
     }
 
-    override fun showPopup(
-        title: String,
-        description: String,
-        cancelable: Boolean,
-        onCancel: (() -> Unit)?,
-        icon: Int?,
-        image: String?,
-        onDismiss: (() -> Unit)?
-    ) = com.me.rickmorty.util.tools.showPopup(
-        this,
-        supportFragmentManager,
-        title,
-        description,
-        cancelable,
-        onCancel,
-        icon,
-        image,
-        onDismiss
-    )
+//    override fun showPopup(
+//        title: String,
+//        description: String,
+//        cancelable: Boolean,
+//        onCancel: (() -> Unit)?,
+//        icon: Int?,
+//        image: String?,
+//        onDismiss: (() -> Unit)?
+//    ) = com.me.rickmorty.util.tools.showPopup(
+//        this,
+//        supportFragmentManager,
+//        title,
+//        description,
+//        cancelable,
+//        onCancel,
+//        icon,
+//        image,
+//        onDismiss
+//    )
 
-    override fun showPopup(
-        title: String,
-        description: String,
-        positiveListener: (DialogInterface?, Int) -> Unit,
-        positiveButton: String?,
-        cancelable: Boolean,
-        onCancel: (() -> Unit)?,
-        icon: Int?,
-        image: String?,
-        onDismiss: (() -> Unit)?
-    ) = com.me.rickmorty.util.tools.showPopup(
-        this,
-        supportFragmentManager,
-        title,
-        description,
-        positiveListener,
-        positiveButton,
-        cancelable,
-        onCancel,
-        icon,
-        image,
-        onDismiss
-    )
-
-    override fun showPopup(
-        title: String,
-        description: String,
-        positiveListener: (DialogInterface?, Int) -> Unit,
-        positiveButton: String?,
-        negativeListener: ((DialogInterface?, Int) -> Unit)?,
-        negativeButton: String?,
-        cancelable: Boolean,
-        onCancel: (() -> Unit)?,
-        icon: Int?,
-        image: String?,
-        onDismiss: (() -> Unit)?
-    ) = com.me.rickmorty.util.tools.showPopup(
-        this,
-        supportFragmentManager,
-        title,
-        description,
-        positiveListener,
-        positiveButton,
-        negativeListener,
-        negativeButton,
-        cancelable,
-        onCancel,
-        icon,
-        image,
-        onDismiss
-    )
+//    override fun showPopup(
+//        title: String,
+//        description: String,
+//        positiveListener: (DialogInterface?, Int) -> Unit,
+//        positiveButton: String?,
+//        cancelable: Boolean,
+//        onCancel: (() -> Unit)?,
+//        icon: Int?,
+//        image: String?,
+//        onDismiss: (() -> Unit)?
+//    ) = com.me.rickmorty.util.tools.showPopup(
+//        this,
+//        supportFragmentManager,
+//        title,
+//        description,
+//        positiveListener,
+//        positiveButton,
+//        cancelable,
+//        onCancel,
+//        icon,
+//        image,
+//        onDismiss
+//    )
+//
+//    override fun showPopup(
+//        title: String,
+//        description: String,
+//        positiveListener: (DialogInterface?, Int) -> Unit,
+//        positiveButton: String?,
+//        negativeListener: ((DialogInterface?, Int) -> Unit)?,
+//        negativeButton: String?,
+//        cancelable: Boolean,
+//        onCancel: (() -> Unit)?,
+//        icon: Int?,
+//        image: String?,
+//        onDismiss: (() -> Unit)?
+//    ) = com.me.rickmorty.util.tools.showPopup(
+//        this,
+//        supportFragmentManager,
+//        title,
+//        description,
+//        positiveListener,
+//        positiveButton,
+//        negativeListener,
+//        negativeButton,
+//        cancelable,
+//        onCancel,
+//        icon,
+//        image,
+//        onDismiss
+//    )
 }

@@ -27,6 +27,7 @@ object Dependencies {
 
         val vglide = "4.14.1"
         add("com.github.bumptech.glide:glide:$vglide")
+        add("com.github.bumptech.glide:compose:1.0.0-beta01")
 
         val coroutines = "1.6.4"
         add("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines")
@@ -100,6 +101,7 @@ object Dependencies {
         val coil = "1.4.0"
         add("io.coil-kt:coil-compose:${coil}")
 
+        add("androidx.compose.runtime:runtime-livedata:1.6.0")
 
     }
 

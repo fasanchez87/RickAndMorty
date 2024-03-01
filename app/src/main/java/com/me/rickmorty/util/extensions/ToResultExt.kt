@@ -2,7 +2,6 @@ package com.me.rickmorty.util.extensions
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.me.rickmorty.util.tools.ResultEvent
 import com.me.rickmorty.util.tools.ResultObject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -22,15 +21,15 @@ suspend fun <T> toResult(closure: suspend () -> T): ResultObject<T> {
         ResultObject.onError(e)
     }
 }
-
-suspend fun toResultEvent(closure: suspend () -> Unit): ResultEvent {
-    return try {
-        closure.invoke()
-        ResultEvent.onSuccess()
-    } catch (e: Throwable) {
-        ResultEvent.onError(e)
-    }
-}
+//
+//suspend fun toResultEvent(closure: suspend () -> Unit): ResultEvent {
+//    return try {
+//        closure.invoke()
+//        ResultEvent.onSuccess()
+//    } catch (e: Throwable) {
+//        ResultEvent.onError(e)
+//    }
+//}
 
 fun <T> toResultLiveData(
     context: CoroutineContext = EmptyCoroutineContext,
@@ -43,18 +42,18 @@ fun <T> toResultLiveData(
         )
     }
 }
-
-fun toResultEventLiveData(
-    context: CoroutineContext = EmptyCoroutineContext,
-    timeoutInMs: Long = DEFAULT_TIMEOUT,
-    closure: suspend () -> Unit
-): LiveData<ResultEvent> {
-    return liveData(context, timeoutInMs) {
-        emit(
-            toResultEvent(closure)
-        )
-    }
-}
+//
+//fun toResultEventLiveData(
+//    context: CoroutineContext = EmptyCoroutineContext,
+//    timeoutInMs: Long = DEFAULT_TIMEOUT,
+//    closure: suspend () -> Unit
+//): LiveData<ResultEvent> {
+//    return liveData(context, timeoutInMs) {
+//        emit(
+//            toResultEvent(closure)
+//        )
+//    }
+//}
 
 fun <T> Flow<T>.toResult() =
     map {

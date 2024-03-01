@@ -6,11 +6,13 @@ sealed class ResultObject<T> {
         fun <T> onSuccess(data: T): ResultObject<T> = SuccessObject(data)
         fun <T> onError(e: Throwable): ResultObject<T> = ErrorObject(e)
         fun <T> onEmpty(): ResultObject<T> = EmptyObject()
+        fun <T> onLoading(): ResultObject<T> = LoadingObject()
     }
 
     data class SuccessObject<T>(var data: T) : ResultObject<T>()
     data class ErrorObject<T>(val t: Throwable) : ResultObject<T>()
     class EmptyObject<T> : ResultObject<T>()
+    class LoadingObject<T> : ResultObject<T>()
 
     open fun isError(): Boolean = this is ErrorObject
     open fun isSuccess(): Boolean = this is SuccessObject
@@ -66,19 +68,19 @@ sealed class ResultObject<T> {
             else -> ErrorObject(IllegalStateException("We can't do a flat map in ${this::class.java.simpleName} object"))
         }
 }
-
-sealed class ResultEvent : ResultObject<Unit>() {
-
-    class SuccessEvent : ResultEvent()
-
-    data class ErrorEvent(val t: Throwable) : ResultEvent()
-
-    override fun isError(): Boolean = this is ErrorEvent
-
-    override fun isSuccess(): Boolean = this is SuccessEvent
-
-    companion object {
-        fun onSuccess(): ResultEvent = SuccessEvent()
-        fun onError(e: Throwable): ResultEvent = ErrorEvent(e)
-    }
-}
+//
+//sealed class ResultEvent : ResultObject<Unit>() {
+//
+//    class SuccessEvent : ResultEvent()
+//
+//    data class ErrorEvent(val t: Throwable) : ResultEvent()
+//
+//    override fun isError(): Boolean = this is ErrorEvent
+//
+//    override fun isSuccess(): Boolean = this is SuccessEvent
+//
+//    companion object {
+//        fun onSuccess(): ResultEvent = SuccessEvent()
+//        fun onError(e: Throwable): ResultEvent = ErrorEvent(e)
+//    }
+//}
