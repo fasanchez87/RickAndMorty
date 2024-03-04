@@ -176,7 +176,7 @@ abstract class BaseActivity: AppCompatActivity(), CoreListener {
 //        }
 
     @Composable
-    override fun showLoading() {
+    override fun showLoading(isLoading: Boolean) {
         frmProgress.visibility = View.VISIBLE
     }
 

@@ -5,7 +5,9 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +33,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +43,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.Font
@@ -55,29 +60,35 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.me.rickmorty.R
+import com.me.rickmorty.app.App
+import com.me.rickmorty.app.App.Companion.get
+import com.me.rickmorty.app.ui.CharacterScreen
+import com.me.rickmorty.app.ui.Routes
+import com.me.rickmorty.app.ui.SplashScreen
 import com.me.rickmorty.app.ui.theme.RickMortyTheme
 import com.me.rickmorty.util.extensions.hasNetworkConnection
 import com.me.rickmorty.util.tools.CoreListener
 import com.me.rickmorty.util.tools.ErrorLoginException
 import com.me.rickmorty.util.tools.ResultObject
 import com.me.rickmorty.util.tools.ShowMessageException
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
 import java.net.UnknownHostException
 
-abstract class BaseActivityCompose: ComponentActivity(), CoreListener {
+@AndroidEntryPoint
+class BaseActivityCompose: ComponentActivity(), CoreListener {
 
-    abstract val lifeCycleOwner: Lifecycle.State
+    //    abstract val lifeCycleOwner: Lifecycle.State
+//
+    lateinit var titleAppBar: String
+//
 
-    abstract val titleAppBar: String
+    private lateinit var navigator: NavHostController
 
-    abstract val context: Context
-    
-    lateinit var navigator: NavHostController
-
-    var isLoading = mutableStateOf(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,35 +105,92 @@ abstract class BaseActivityCompose: ComponentActivity(), CoreListener {
         }
     }
 
+    private var isLoading = mutableStateOf(false)
+
+
     @Preview(showBackground = true)
     @Composable
     fun BaseActivityView() {
-        
+
         navigator = rememberNavController()
-        
+
+        var showAppBar by remember { mutableStateOf(true) }
+
+        var titleAppBar by remember { mutableStateOf("") }
+
+        var context by remember { mutableStateOf<Context?>(null) }
+
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(
+                MaterialTheme.colorScheme.background.toArgb(),
+                MaterialTheme.colorScheme.background.toArgb(),
+            ),
+            navigationBarStyle = SystemBarStyle.auto(
+                MaterialTheme.colorScheme.background.toArgb(),
+                MaterialTheme.colorScheme.background.toArgb(),
+            )
+        )
 
         Column {
-            AppBar(
-                title = titleAppBar,
-                onClickIcon = {
-                    context.apply {
-                        (this as Activity).finish()
+            if (showAppBar) {
+                AppBar(
+                    title = titleAppBar,
+                    onClickIcon = {
+                        context.apply {
+                            (this as Activity).finish()
+                        }
                     }
-                }
-            )
+                )
+            }
             Box(modifier = Modifier
                 .fillMaxSize()
             ) {
                 //Here, all activity children will be add its content
-                ProvideActivityContent()
-                showLoading()
+                //ProvideActivityContent()
+                NavHost(
+                    navController = navigator,
+                    startDestination = Routes.Splash.route
+                ) {
+                    composable(route = Routes.Splash.route) {
+                        SplashScreen(navigator){
+                            showAppBar = it
+                        }
+                    }
+                    composable(route = Routes.Characters.route) {
+                        CharacterScreen(
+                            onClick = {
+                                navigator.navigate(
+                                    Routes.Characters.createRoute()
+                                )
+                            },
+                            isLoading = {
+                                isLoading.value = it
+                            },
+                            titleAppBar = {
+                                titleAppBar = it
+                            },
+                            showAppBar = {
+                                showAppBar = it
+                            },
+                            context = {
+                                context = it
+                            }
+                        )
+                    }
+                }
+
+
+
+                showLoading(isLoading.value)
+
+
             }
         }
     }
 
     @Composable
-    override fun showLoading() {
-        if (isLoading.value) {
+    override fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
             Box(modifier = Modifier
                 .fillMaxSize()
                 .background(Color.Black.copy(alpha = 0.5f))
@@ -140,8 +208,8 @@ abstract class BaseActivityCompose: ComponentActivity(), CoreListener {
         }
     }
 
-    @Composable
-    abstract fun ProvideActivityContent()
+//    @Composable
+//    abstract fun ProvideActivityContent()
 
     @Composable
     fun <@Composable T> ObserveStateFlow(
@@ -158,11 +226,11 @@ abstract class BaseActivityCompose: ComponentActivity(), CoreListener {
         }
 
         LaunchedEffect(result) {
-            lifecycleOwner.repeatOnLifecycle(lifeCycleOwner) {
-                stateFlow.collect {
-                    result.value = it
-                }
-            }
+//            lifecycleOwner.repeatOnLifecycle(lifeCycleOwner) {
+//                stateFlow.collect {
+//                    result.value = it
+//                }
+//            }
         }
 
         when (val result = result.value) {
@@ -190,7 +258,7 @@ abstract class BaseActivityCompose: ComponentActivity(), CoreListener {
     }
 
     override fun onError(throwable: Throwable) {
-       // handleError(throwable) {}
+        // handleError(throwable) {}
     }
 
     @Composable
@@ -242,7 +310,7 @@ abstract class BaseActivityCompose: ComponentActivity(), CoreListener {
                 title = "Error",
                 description = dialogMessage,
                 onDismiss = {
-                    Toast.makeText(context, "Dismiss", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(context, "Dismiss", Toast.LENGTH_SHORT).show()
                     showDialog = false
                     onDismiss()
                 }
@@ -279,39 +347,39 @@ abstract class BaseActivityCompose: ComponentActivity(), CoreListener {
         }
     }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun AppBar(
-    title: String,
-    onClickIcon: () -> Unit
-){
-    TopAppBar(
-        colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = Color(0xFFFFFFFF)
-        ),
-        title = {
-            Text(
-                text = title,
-                fontFamily = FontFamily(Font(R.font.montserrat_semibold))
-            )
-        },
-        modifier = Modifier.shadow(7.dp),
-        navigationIcon = {
-            IconButton(
-                onClick = {
-                    onClickIcon()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = Color(0xFFFFFFFF)
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun AppBar(
+        title: String,
+        onClickIcon: () -> Unit
+    ){
+        TopAppBar(
+            colors = TopAppBarDefaults.smallTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                titleContentColor = Color(0xFFFFFFFF)
+            ),
+            title = {
+                Text(
+                    text = title,
+                    fontFamily = FontFamily(Font(R.font.montserrat_semibold))
                 )
+            },
+            modifier = Modifier.shadow(7.dp),
+            navigationIcon = {
+                IconButton(
+                    onClick = {
+                        onClickIcon()
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        tint = Color(0xFFFFFFFF)
+                    )
+                }
             }
-        }
-    )
-}
+        )
+    }
 
     @Composable
     fun ShowDialog(
@@ -319,58 +387,58 @@ fun AppBar(
         description: String,
         onDismiss: () -> Unit
     ) {
-            Dialog(
-                onDismissRequest = {
-                    onDismiss()
-                },
-                properties = DialogProperties(
-                    dismissOnBackPress = true,
-                    dismissOnClickOutside = true
-                )
+        Dialog(
+            onDismissRequest = {
+                onDismiss()
+            },
+            properties = DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true
+            )
+        ) {
+            Card(
+                modifier = Modifier
+                    .testTag("dialog")
+                    .fillMaxWidth(),
+                colors = CardDefaults
+                    .cardColors(
+                        containerColor = Color.White
+                    ),
             ) {
-                Card(
+                Column(
                     modifier = Modifier
-                        .testTag("dialog")
-                        .fillMaxWidth(),
-                    colors = CardDefaults
-                        .cardColors(
-                            containerColor = Color.White
-                        ),
+                        .fillMaxWidth()
+                        .padding(16.dp)
                 ) {
-                    Column(
+                    Text(
+                        text = "Add Task",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
+                            .align(Alignment.End)
                     ) {
-                        Text(
-                            text = "Add Task",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Row(
-                            modifier = Modifier
-                                .align(Alignment.End)
+                        TextButton(
+                            onClick = {
+                                onDismiss()
+                            }
                         ) {
-                            TextButton(
-                                onClick = {
-                                    onDismiss()
-                                }
-                            ) {
-                                Text(text = "Cancel")
-                            }
-                            TextButton(
-                                onClick = {
+                            Text(text = "Cancel")
+                        }
+                        TextButton(
+                            onClick = {
 
-                                },
-                                enabled = true
-                            ) {
-                                Text(text = "Save")
-                            }
+                            },
+                            enabled = true
+                        ) {
+                            Text(text = "Save")
                         }
                     }
                 }
             }
         }
+    }
 
 }
     

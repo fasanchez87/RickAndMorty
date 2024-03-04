@@ -16,22 +16,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="31">
+<!--        <activity-->
+<!--            android:name=".app.ui.RickMortyApp"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".app.ui.character.DetailCharacterActivity"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/title_activity_detail_character"-->
+<!--            android:theme="@style/AppTheme" />-->
+<!--        <activity-->
+<!--            android:name=".app.ui.character.CharactersActivity"-->
+<!--            android:exported="false"-->
+<!--            android:theme="@style/AppTheme" />-->
         <activity
-            android:name=".app.ui.character.DetailCharacterActivity"
-            android:exported="false"
-            android:label="@string/title_activity_detail_character"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:theme="@style/AppTheme"
-            android:name=".app.ui.character.CharactersActivity"
-            android:exported="false" />
-        <activity
-            android:name=".app.ui.splash.SplashActivity"
+            android:name=".app.ui.base.BaseActivityCompose"
             android:exported="true"
             android:screenOrientation="locked">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

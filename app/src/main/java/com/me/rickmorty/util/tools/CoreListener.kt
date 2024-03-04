@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 interface CoreListener: ErrorHandleable {
 
     @Composable
-    fun showLoading()
+    fun showLoading(isLoading: Boolean)
 
     fun hideLoading()
 

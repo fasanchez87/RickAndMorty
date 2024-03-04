@@ -103,6 +103,11 @@ object Dependencies {
 
         add("androidx.compose.runtime:runtime-livedata:1.6.0")
 
+        add("androidx.navigation:navigation-compose:2.7.7")
+        add("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+
+
     }
 
     val appAnnotationProcessor = mutableListOf<String>().apply {
