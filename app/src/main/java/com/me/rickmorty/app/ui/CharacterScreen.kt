@@ -20,6 +20,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -52,7 +54,6 @@ fun CharacterScreen(
     context: (Context) -> Unit
 ) {
 
-
     val currentContext = LocalContext.current.apply {
         context(this)
     }
@@ -65,9 +66,8 @@ fun CharacterScreen(
 
     showAppBar(true)
 
-
     ObserveStateFlow(
-        stateFlow = viewModel.characters,
+        stateFlow = viewModel.getCharacters(),
         onSuccess = {
             CharacterList(
                 it,
@@ -83,13 +83,16 @@ fun CharacterScreen(
         onEmpty = {
             //Handle empty
             Timber.tag("CharactersActivity").i("Empty")
+            isLoadingRemember.value = false
+
         },
         onLoading = {
             //Handle loading
-            Timber.tag("CharactersActivity").i("Loading")
             isLoadingRemember.value = true
+            Timber.tag("CharactersActivity").i("Loading")
         },
-        context = LocalContext.current
+        context = LocalContext.current,
+        lifecycleOwner =  LocalLifecycleOwner.current
     )
 
     LaunchedEffect(isLoadingRemember.value) {
@@ -139,7 +142,8 @@ fun CharacterItemView(
 
                     }
                 )
-            }.clickable {
+            }
+            .clickable {
                 Toast
                     .makeText(context, "click", Toast.LENGTH_LONG)
                     .show()
@@ -171,7 +175,8 @@ fun CharacterItemView(
 
             Column(
                 modifier = Modifier
-                    .fillMaxWidth().align(Alignment.Top)
+                    .fillMaxWidth()
+                    .align(Alignment.Top)
                     .padding(start = 20.dp),
             ) {
                 Text(

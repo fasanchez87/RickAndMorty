@@ -16,7 +16,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(
     navController: NavHostController,
-    showAppBar: (Boolean) -> Unit = {}
+    showAppBar: (Boolean) -> Unit
 ) {
 
     showAppBar(false)

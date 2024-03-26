@@ -14,7 +14,6 @@ class CharacterRepositoryImpl @Inject constructor(
 ) : CharacterRepository {
 
     override suspend fun getListCharacter(): List<CharacterModel> =
-
         baseRequest.request {
             characterApi.getCharacters()
         }.let {

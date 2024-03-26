@@ -1,13 +1,12 @@
 package com.me.rickmorty.app.ui.base
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +33,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,8 +45,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -56,18 +56,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.me.rickmorty.R
-import com.me.rickmorty.app.App
-import com.me.rickmorty.app.App.Companion.get
 import com.me.rickmorty.app.ui.CharacterScreen
 import com.me.rickmorty.app.ui.Routes
 import com.me.rickmorty.app.ui.SplashScreen
+import com.me.rickmorty.app.ui.character.BaseActivityViewModel
 import com.me.rickmorty.app.ui.theme.RickMortyTheme
 import com.me.rickmorty.util.extensions.hasNetworkConnection
 import com.me.rickmorty.util.tools.CoreListener
@@ -82,13 +80,9 @@ import java.net.UnknownHostException
 @AndroidEntryPoint
 class BaseActivityCompose: ComponentActivity(), CoreListener {
 
-    //    abstract val lifeCycleOwner: Lifecycle.State
-//
-    lateinit var titleAppBar: String
-//
+    private val viewModel: BaseActivityViewModel by viewModels()
 
     private lateinit var navigator: NavHostController
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,31 +99,20 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
         }
     }
 
-    private var isLoading = mutableStateOf(false)
-
-
     @Preview(showBackground = true)
     @Composable
     fun BaseActivityView() {
 
         navigator = rememberNavController()
 
-        var showAppBar by remember { mutableStateOf(true) }
+        val showAppBar by viewModel.showAppBar.collectAsState()
+        val titleAppBar by viewModel.titleAppBar.collectAsState()
+        val isLoading by viewModel.showLoading.collectAsState()
+        val context by viewModel.context.collectAsState()
 
-        var titleAppBar by remember { mutableStateOf("") }
+        val statusBarColor = if (showAppBar) MaterialTheme.colorScheme.primary else Color(0xFFFFFFFF)
 
-        var context by remember { mutableStateOf<Context?>(null) }
-
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(
-                MaterialTheme.colorScheme.background.toArgb(),
-                MaterialTheme.colorScheme.background.toArgb(),
-            ),
-            navigationBarStyle = SystemBarStyle.auto(
-                MaterialTheme.colorScheme.background.toArgb(),
-                MaterialTheme.colorScheme.background.toArgb(),
-            )
-        )
+        SetColorStatusBar(statusBarColor)
 
         Column {
             if (showAppBar) {
@@ -142,6 +125,9 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
                     }
                 )
             }
+            else {
+                SetColorStatusBar(Color(0xFFFFFFFF))
+            }
             Box(modifier = Modifier
                 .fillMaxSize()
             ) {
@@ -153,7 +139,7 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
                 ) {
                     composable(route = Routes.Splash.route) {
                         SplashScreen(navigator){
-                            showAppBar = it
+                            viewModel.setShowAppBar(it)
                         }
                     }
                     composable(route = Routes.Characters.route) {
@@ -164,26 +150,37 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
                                 )
                             },
                             isLoading = {
-                                isLoading.value = it
+                               // isLoading.value = it
+                                viewModel.showLoading(it)
                             },
                             titleAppBar = {
-                                titleAppBar = it
+                                //titleAppBar = it
+                                viewModel.setTitleAppBar(it)
                             },
                             showAppBar = {
-                                showAppBar = it
+                                //showAppBar = it
+                                viewModel.setShowAppBar(it)
                             },
                             context = {
-                                context = it
+                                //context = it
+                                viewModel.setContext(it)
                             }
                         )
                     }
                 }
+                showLoading(isLoading)
+            }
+        }
+    }
 
-
-
-                showLoading(isLoading.value)
-
-
+    @Composable
+    fun SetColorStatusBar(color: Color){
+        val view = LocalView.current
+        if (!view.isInEditMode) {
+            SideEffect {
+                val window = (view.context as Activity).window
+                window.statusBarColor = color.toArgb()
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
             }
         }
     }

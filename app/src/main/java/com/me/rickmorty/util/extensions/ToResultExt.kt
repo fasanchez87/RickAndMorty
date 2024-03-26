@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.repeatOnLifecycle
@@ -49,25 +50,22 @@ internal const val DEFAULT_TIMEOUT = 5000L
 
 @Composable
 fun <@Composable T> ObserveStateFlow(
-    stateFlow: StateFlow<ResultObject<T>>,
+    stateFlow: LiveData<ResultObject<T>>,
     onSuccess: @Composable (T) -> Unit,
     onError: (Throwable) -> Unit = { },
     onEmpty: () -> Unit  = { },
     onLoading: @Composable () -> Unit,
-    context: Context
+    context: Context,
+    lifecycleOwner: LifecycleOwner
 ) {
-
-    val lifeCycleOwner: Lifecycle.State = Lifecycle.State.STARTED
-
-    val lifecycleOwner = LocalLifecycleOwner.current.lifecycle
 
     val result = remember {
         mutableStateOf<ResultObject<T>>(ResultObject.LoadingObject())
     }
 
-    LaunchedEffect(result) {
-        lifecycleOwner.repeatOnLifecycle(lifeCycleOwner) {
-            stateFlow.collect {
+    LaunchedEffect(result, lifecycleOwner) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            stateFlow.observe(lifecycleOwner) {
                 result.value = it
             }
         }
@@ -247,3 +245,4 @@ fun <T> Flow<T>.toResult() =
     }.catch {
         Result.failure<T>(it)
     }
+
