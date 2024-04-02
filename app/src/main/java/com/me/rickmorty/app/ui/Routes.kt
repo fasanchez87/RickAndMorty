@@ -26,6 +26,6 @@ sealed class Routes(
                 type = NavType.StringType
             })
     ) {
-        fun createRoute(character: CharacterModel) = "detailCharacter/${character}"
+        fun createRoute(character: String) = "detailCharacter/${character}"
     }
 }

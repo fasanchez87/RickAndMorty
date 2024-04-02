@@ -15,10 +15,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +31,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.liveData
 import androidx.lifecycle.repeatOnLifecycle
 import com.me.rickmorty.util.tools.ErrorLoginException
@@ -50,41 +53,38 @@ internal const val DEFAULT_TIMEOUT = 5000L
 
 @Composable
 fun <@Composable T> ObserveStateFlow(
-    stateFlow: LiveData<ResultObject<T>>,
+    stateFlow: StateFlow<ResultObject<T>>,
     onSuccess: @Composable (T) -> Unit,
     onError: (Throwable) -> Unit = { },
     onEmpty: () -> Unit  = { },
     onLoading: @Composable () -> Unit,
-    context: Context,
-    lifecycleOwner: LifecycleOwner
+    context: Context = LocalContext.current,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
 ) {
 
-    val result = remember {
+    val resultObject = remember {
         mutableStateOf<ResultObject<T>>(ResultObject.LoadingObject())
     }
 
-    LaunchedEffect(result, lifecycleOwner) {
+    LaunchedEffect(resultObject, lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            stateFlow.observe(lifecycleOwner) {
-                result.value = it
+            stateFlow.collect {
+                resultObject.value = it
             }
         }
     }
 
-    when (val result = result.value) {
+    when (val result = resultObject.value) {
         is ResultObject.SuccessObject -> {
             onSuccess(result.data)
         }
-
         is ResultObject.ErrorObject -> {
             onError(result.t)
             HandleError(result.t, context) {}
         }
-
         is ResultObject.EmptyObject -> {
             onEmpty()
         }
-
         is ResultObject.LoadingObject -> {
             onLoading()
         }

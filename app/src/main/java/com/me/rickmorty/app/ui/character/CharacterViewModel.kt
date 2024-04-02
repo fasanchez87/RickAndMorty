@@ -2,6 +2,7 @@ package com.me.rickmorty.app.ui.character
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.me.rickmorty.app.ui.base.BaseViewModel
@@ -16,6 +17,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -25,26 +28,28 @@ class CharacterViewModel @Inject constructor(
     private val characterRepository: CharacterRepository,
 ) : BaseViewModel() {
 
-    private val _characters = MutableStateFlow<ResultObject<List<CharacterModel>>>(ResultObject.onLoading())
-    val characters: StateFlow<ResultObject<List<CharacterModel>>> = _characters.asStateFlow()
+//    private val _characters = MutableStateFlow<ResultObject<List<CharacterModel>>>(ResultObject.onLoading())
+//    val characters: StateFlow<ResultObject<List<CharacterModel>>> = _characters.asStateFlow()
 
-    init {
-       //getCharactersCompose()
-    }
+//    init {
+//       //getCharactersCompose()
+//    }
 
-    fun getCharacters(): LiveData<ResultObject<List<CharacterModel>>> {
+    fun getCharactersCompose(): StateFlow<ResultObject<List<CharacterModel>>> {
         return toResultLiveData {
             characterRepository.getListCharacter()
         }
+        .asFlow()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ResultObject.onLoading())
     }
 
-    fun getCharactersCompose(): StateFlow<ResultObject<List<CharacterModel>>> {
-        viewModelScope.launch {
-            _characters.value = toResult {
-                characterRepository.getListCharacter()
-            }
-        }
-        return characters
-    }
+//    fun getCharactersCompose(): StateFlow<ResultObject<List<CharacterModel>>> {
+//        viewModelScope.launch {
+//            _characters.value = toResult {
+//                characterRepository.getListCharacter()
+//            }
+//        }
+//        return characters
+//    }
 
 }

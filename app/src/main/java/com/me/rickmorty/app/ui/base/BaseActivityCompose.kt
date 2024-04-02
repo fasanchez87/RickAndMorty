@@ -45,6 +45,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
@@ -62,11 +63,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.me.rickmorty.R
+import com.me.rickmorty.app.ui.CharacterDetailScreen
 import com.me.rickmorty.app.ui.CharacterScreen
 import com.me.rickmorty.app.ui.Routes
 import com.me.rickmorty.app.ui.SplashScreen
 import com.me.rickmorty.app.ui.character.BaseActivityViewModel
 import com.me.rickmorty.app.ui.theme.RickMortyTheme
+import com.me.rickmorty.domain.model.CharacterModel
 import com.me.rickmorty.util.extensions.hasNetworkConnection
 import com.me.rickmorty.util.tools.CoreListener
 import com.me.rickmorty.util.tools.ErrorLoginException
@@ -119,8 +122,12 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
                 AppBar(
                     title = titleAppBar,
                     onClickIcon = {
-                        context.apply {
-                            (this as Activity).finish()
+//                        context.apply {
+//                            (this as Activity).finish()
+//                        }
+                        if (!navigator.popBackStack()) {
+                            //(this as Activity).finish()
+                            (context as Activity).finish()
                         }
                     }
                 )
@@ -138,7 +145,7 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
                     startDestination = Routes.Splash.route
                 ) {
                     composable(route = Routes.Splash.route) {
-                        SplashScreen(navigator){
+                        SplashScreen(navigator) {
                             viewModel.setShowAppBar(it)
                         }
                     }
@@ -146,11 +153,11 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
                         CharacterScreen(
                             onClick = {
                                 navigator.navigate(
-                                    Routes.Characters.createRoute()
+                                    Routes.CharacterDetail.createRoute(it.name)
                                 )
                             },
                             isLoading = {
-                               // isLoading.value = it
+                                // isLoading.value = it
                                 viewModel.showLoading(it)
                             },
                             titleAppBar = {
@@ -167,8 +174,27 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
                             }
                         )
                     }
+                    composable(
+                        route = Routes.CharacterDetail.route,
+                        arguments = Routes.CharacterDetail.navArguments
+                    ) {
+                        it.arguments?.getString("character")
+                            ?.let { character ->
+                                CharacterDetailScreen(
+                                    characterModel = character,
+                                    titleAppBar = {
+                                        //titleAppBar = it
+                                        viewModel.setTitleAppBar(character)
+                                    },
+                                    onBackPressed = {
+                                        navigator.popBackStack()
+                                    }
+                                )
+                            }
+
+                    }
                 }
-                showLoading(isLoading)
+              //  showLoading(isLoading)
             }
         }
     }

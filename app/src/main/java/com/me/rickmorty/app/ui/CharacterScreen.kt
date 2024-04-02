@@ -35,12 +35,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
 import com.me.rickmorty.R
 import com.me.rickmorty.app.ui.character.CharacterViewModel
 import com.me.rickmorty.domain.model.CharacterModel
+import com.me.rickmorty.generated.callback.OnClickListener
 import com.me.rickmorty.util.extensions.ObserveStateFlow
 import timber.log.Timber
 
@@ -67,11 +70,12 @@ fun CharacterScreen(
     showAppBar(true)
 
     ObserveStateFlow(
-        stateFlow = viewModel.getCharacters(),
+        stateFlow = viewModel.getCharactersCompose(),
         onSuccess = {
             CharacterList(
                 it,
-                currentContext
+                currentContext,
+                onClick
             )
             isLoadingRemember.value = false
         },
@@ -103,7 +107,8 @@ fun CharacterScreen(
 @Composable
 fun CharacterList(
     characters: List<CharacterModel>,
-    context: Context
+    context: Context,
+    onClick: (CharacterModel) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -119,7 +124,8 @@ fun CharacterList(
         ) { character ->
             CharacterItemView(
                 character = character,
-                context = context
+                context = context,
+                onClick = onClick
             )
         }
     }
@@ -130,7 +136,8 @@ fun CharacterList(
 @Composable
 fun CharacterItemView(
     character: CharacterModel,
-    context: Context
+    context: Context,
+    onClick: (CharacterModel) -> Unit
 ){
     Card(
         modifier = Modifier
@@ -144,9 +151,7 @@ fun CharacterItemView(
                 )
             }
             .clickable {
-                Toast
-                    .makeText(context, "click", Toast.LENGTH_LONG)
-                    .show()
+                onClick(character)
             },
         colors = CardDefaults
             .cardColors(
