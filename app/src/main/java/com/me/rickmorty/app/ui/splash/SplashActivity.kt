@@ -23,7 +23,7 @@ class SplashActivity : BaseActivity() {
 
             lifecycleScope.launch {
                 delay(3000)
-                startActivity(navigator.navigateToCharacters())
+               // startActivity(navigator.navigateToCharacters())
             }
     }
 }

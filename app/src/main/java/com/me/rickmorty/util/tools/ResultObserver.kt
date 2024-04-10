@@ -2,7 +2,9 @@ package com.me.rickmorty.util.tools
 
 import androidx.lifecycle.Observer
 
-abstract class ResultObserver<T>(private val listener: ErrorHandleable) : Observer<ResultObject<T>> {
+abstract class ResultObserver<T>(
+    private val listener: ErrorHandleable
+) : Observer<ResultObject<T>> {
 
     final override fun onChanged(value: ResultObject<T>) {
         when (value) {
