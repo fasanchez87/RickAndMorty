@@ -21,11 +21,11 @@ sealed class Routes(
     }
 
     object CharacterDetail : Routes(
-            "detailCharacter/{character}",
-            navArguments = listOf(navArgument("character") {
+            "detailCharacter/{id}",
+            navArguments = listOf(navArgument("id") {
                 type = NavType.StringType
             })
     ) {
-        fun createRoute(character: String) = "detailCharacter/${character}"
+        fun createRoute(idCharacter: String) = "detailCharacter/${idCharacter}"
     }
 }

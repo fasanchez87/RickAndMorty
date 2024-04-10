@@ -42,7 +42,6 @@ import com.bumptech.glide.integration.compose.placeholder
 import com.me.rickmorty.R
 import com.me.rickmorty.app.ui.base.BaseActivityCompose
 import com.me.rickmorty.domain.model.CharacterModel
-import com.me.rickmorty.util.extensions.ObserveStateFlow
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 

@@ -19,4 +19,11 @@ class CharacterRepositoryImpl @Inject constructor(
         }.let {
             characterMapper.toListModel(it.characters.toMutableList())
         }
+
+    override suspend fun getCharacterById(id: String): CharacterModel =
+        baseRequest.request {
+            characterApi.getCharacterById(id)
+        }.let {
+            characterMapper.toModel(it)
+        }
 }

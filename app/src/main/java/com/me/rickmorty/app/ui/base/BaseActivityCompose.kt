@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -83,6 +84,7 @@ import java.net.UnknownHostException
 @AndroidEntryPoint
 class BaseActivityCompose: ComponentActivity(), CoreListener {
 
+
     private val viewModel: BaseActivityViewModel by viewModels()
 
     private lateinit var navigator: NavHostController
@@ -105,6 +107,10 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
     @Preview(showBackground = true)
     @Composable
     fun BaseActivityView() {
+
+        BackHandler {
+            finishAffinity()
+        }
 
         navigator = rememberNavController()
 
@@ -153,7 +159,7 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
                         CharacterScreen(
                             onClick = {
                                 navigator.navigate(
-                                    Routes.CharacterDetail.createRoute(it.name)
+                                    Routes.CharacterDetail.createRoute(it.id)
                                 )
                             },
                             isLoading = {
@@ -178,23 +184,22 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
                         route = Routes.CharacterDetail.route,
                         arguments = Routes.CharacterDetail.navArguments
                     ) {
-                        it.arguments?.getString("character")
+                        it.arguments?.getString("id")
                             ?.let { character ->
                                 CharacterDetailScreen(
-                                    characterModel = character,
-                                    titleAppBar = {
-                                        //titleAppBar = it
-                                        viewModel.setTitleAppBar(character)
+                                    idCharacter = character,
+                                    isLoading = {
+                                        viewModel.showLoading(it)
                                     },
-                                    onBackPressed = {
-                                        navigator.popBackStack()
+                                    titleAppBar = {
+                                        viewModel.setTitleAppBar(it)
                                     }
                                 )
                             }
 
                     }
                 }
-              //  showLoading(isLoading)
+                showLoading(isLoading)
             }
         }
     }

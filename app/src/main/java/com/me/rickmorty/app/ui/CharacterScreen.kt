@@ -1,7 +1,6 @@
 package com.me.rickmorty.app.ui
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -20,32 +19,29 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
 import com.me.rickmorty.R
 import com.me.rickmorty.app.ui.character.CharacterViewModel
 import com.me.rickmorty.domain.model.CharacterModel
-import com.me.rickmorty.generated.callback.OnClickListener
-import com.me.rickmorty.util.extensions.ObserveStateFlow
+import com.me.rickmorty.util.extensions.ObserveAsFlow
+import com.me.rickmorty.util.extensions.ObserveAsFlowEnhanced
 import timber.log.Timber
+import kotlin.random.Random
 
 @Composable
 fun CharacterScreen(
@@ -61,7 +57,7 @@ fun CharacterScreen(
         context(this)
     }
 
-    val isLoadingRemember = remember {
+    val isLoadingRemember = rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -69,40 +65,41 @@ fun CharacterScreen(
 
     showAppBar(true)
 
-    ObserveStateFlow(
-        stateFlow = viewModel.getCharactersCompose(),
-        onSuccess = {
-            CharacterList(
-                it,
-                currentContext,
-                onClick
-            )
-            isLoadingRemember.value = false
-        },
-        onError = { t ->
-            //Handle error
-            t.message
-            isLoadingRemember.value = false
-        },
-        onEmpty = {
-            //Handle empty
-            Timber.tag("CharactersActivity").i("Empty")
-            isLoadingRemember.value = false
+//    LaunchedEffect(key1 = true) {
+//        viewModel.getCharacters()
+//    }
 
-        },
-        onLoading = {
-            //Handle loading
-            isLoadingRemember.value = true
-            Timber.tag("CharactersActivity").i("Loading")
-        },
-        context = LocalContext.current,
-        lifecycleOwner =  LocalLifecycleOwner.current
-    )
+    ObserveAsFlowEnhanced(
+            stateFlow = viewModel.characters,
+            onSuccess = {
+                CharacterList(
+                    it,
+                    currentContext,
+                    onClick
+                )
+                isLoadingRemember.value = false
+            },
+            onError = {
+                //Handle error
+                Timber.tag("CharactersActivity").e(it)
+                isLoadingRemember.value = false
+            },
+            onEmpty = {
+                //Handle empty
+                Timber.tag("CharactersActivity").i("Empty")
+                isLoadingRemember.value = false
+            },
+            onLoading = {
+                //Handle loading
+                Timber.tag("CharactersActivity").i("Loading")
+                isLoadingRemember.value = true
+            }
+        )
 
-    LaunchedEffect(isLoadingRemember.value) {
-        isLoading(isLoadingRemember.value)
+        LaunchedEffect(isLoadingRemember.value) {
+            isLoading(isLoadingRemember.value)
+        }
     }
-}
 
 @Composable
 fun CharacterList(

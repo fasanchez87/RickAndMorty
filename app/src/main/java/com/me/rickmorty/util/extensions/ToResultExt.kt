@@ -12,10 +12,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,10 +38,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.me.rickmorty.util.tools.ErrorLoginException
 import com.me.rickmorty.util.tools.ResultObject
 import com.me.rickmorty.util.tools.ShowMessageException
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import timber.log.Timber
 import java.net.UnknownHostException
 import kotlin.coroutines.CoroutineContext
@@ -51,8 +56,40 @@ internal const val DEFAULT_TIMEOUT = 5000L
 //This a extension function to convert a suspend function to a ResultObject, so we can handle the success and error cases
 //Further, we can use this function to convert a suspend function to a LiveData<ResultObject> and avoid **boilerplate code
 
+//This function is used to observe a LiveData<ResultObject> as an State and handle the success, error, empty and loading states
+//so, in each emitted it will treated as a State and the UI will recompose on each state change.
 @Composable
-fun <@Composable T> ObserveStateFlow(
+fun <@Composable T> ObserveLiveDataAsState(
+    liveDataState: LiveData<ResultObject<T>>,
+    onSuccess: @Composable (T) -> Unit,
+    onError: (Throwable) -> Unit = { },
+    onEmpty: () -> Unit  = { },
+    onLoading: @Composable () -> Unit,
+    context: Context = LocalContext.current,
+) {
+    val resultObject2 = liveDataState.observeAsState(initial = ResultObject.onLoading())
+
+    when (val result = resultObject2.value) {
+        is ResultObject.SuccessObject -> {
+            onSuccess(result.data)
+        }
+        is ResultObject.ErrorObject -> {
+            onError(result.t)
+            HandleError(result.t, context) {}
+        }
+        is ResultObject.EmptyObject -> {
+            onEmpty()
+        }
+        is ResultObject.LoadingObject -> {
+            onLoading()
+        }
+    }
+}
+
+//This function is used to observe a StateFlow<ResultObject> as an State and handle the success, error, empty and loading states
+//so, in each emitted it will treated as a State and the UI will recompose on each state change.
+@Composable
+fun <@Composable T> ObserveAsFlow(
     stateFlow: StateFlow<ResultObject<T>>,
     onSuccess: @Composable (T) -> Unit,
     onError: (Throwable) -> Unit = { },
@@ -63,10 +100,11 @@ fun <@Composable T> ObserveStateFlow(
 ) {
 
     val resultObject = remember {
-        mutableStateOf<ResultObject<T>>(ResultObject.LoadingObject())
+        mutableStateOf<ResultObject<T>>(ResultObject.onEmpty())
     }
 
     LaunchedEffect(resultObject, lifecycleOwner) {
+        resultObject.value = ResultObject.LoadingObject()
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
             stateFlow.collect {
                 resultObject.value = it
@@ -75,6 +113,32 @@ fun <@Composable T> ObserveStateFlow(
     }
 
     when (val result = resultObject.value) {
+        is ResultObject.SuccessObject -> {
+            onSuccess(result.data)
+        }
+        is ResultObject.ErrorObject -> {
+            onError(result.t)
+            HandleError(result.t, context) {}
+        }
+        is ResultObject.EmptyObject -> {
+            onEmpty()
+        }
+        is ResultObject.LoadingObject -> {
+            onLoading()
+        }
+    }
+}
+
+@Composable
+fun <@Composable T> ObserveAsFlowEnhanced(
+    stateFlow: StateFlow<ResultObject<T>>,
+    onSuccess: @Composable (T) -> Unit,
+    onError: (Throwable) -> Unit = { },
+    onEmpty: () -> Unit  = { },
+    onLoading: @Composable () -> Unit,
+    context: Context = LocalContext.current
+) {
+    when (val result = stateFlow.collectAsStateWithLifecycle().value) {
         is ResultObject.SuccessObject -> {
             onSuccess(result.data)
         }
@@ -205,6 +269,9 @@ suspend fun <T> toResult(closure: suspend () -> T): ResultObject<T> {
         ResultObject.onError(e)
     }
 }
+
+
+
 //
 //suspend fun toResultEvent(closure: suspend () -> Unit): ResultEvent {
 //    return try {
@@ -214,6 +281,19 @@ suspend fun <T> toResult(closure: suspend () -> T): ResultObject<T> {
 //        ResultEvent.onError(e)
 //    }
 //}
+
+fun <T> toResultState(
+    timeoutInMs: Long = DEFAULT_TIMEOUT,
+    viewModelScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext),
+    closure: suspend () -> T
+    ): StateFlow<ResultObject<T>> {
+    val flow = flow {
+        emit(
+            toResult(closure)
+        )
+    }
+    return flow.stateIn(viewModelScope, SharingStarted.WhileSubscribed(timeoutInMs), ResultObject.onLoading())
+}
 
 fun <T> toResultLiveData(
     context: CoroutineContext = EmptyCoroutineContext,
