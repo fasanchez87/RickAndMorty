@@ -1,9 +1,11 @@
 package com.me.rickmorty.data.entity
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.time.ZonedDateTime
 
+//@Keep //This annotation is used to avoid obfuscation of the model class and keep the original names
 @JsonClass(generateAdapter = true)
 data class CharacterEntity(
     @Json(name = "id")
