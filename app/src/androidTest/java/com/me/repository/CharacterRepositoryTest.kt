@@ -33,4 +33,18 @@ class CharacterRepositoryTest: CharacterRepository {
     override suspend fun getListCharacter(): List<CharacterModel> {
         return characterList
     }
+
+    override suspend fun getCharacterById(id: String): CharacterModel {
+        return CharacterModel(
+            "2",
+            "Martin",
+            CharacterModel.Status.ALIVE,
+            CharacterModel.Species.ALIEN,
+            "Earth",
+            CharacterModel.Gender.FEMALE,
+            "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+            "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+            "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+        )
+    }
 }

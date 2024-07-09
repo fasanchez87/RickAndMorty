@@ -33,10 +33,10 @@ class Module {
 //        return App.gsonSingleton.create()
 //    }
 
-    @Provides
-    @Singleton
-    fun provideMoshi(): Moshi {
-        return App.moshiSingleton.build()
-    }
+//    @Provides
+//    @Singleton
+//    fun provideMoshi(): Moshi {
+//        return App.moshiSingleton.build()
+//    }
 }
 

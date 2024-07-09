@@ -8,6 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.net.CookieManager
 import java.net.CookiePolicy
 import java.util.concurrent.TimeUnit
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class RetrofitFactory @Inject constructor(
     private val configuration: ConfigurationRestClient,
     private val responseInterceptor: Interceptor? = null,
-    private val converterFactory: Converter.Factory? = GsonConverterFactory.create()
+    private val converterFactory: Converter.Factory? = MoshiConverterFactory.create()
 ) {
 
     fun getRetrofit(): Retrofit {

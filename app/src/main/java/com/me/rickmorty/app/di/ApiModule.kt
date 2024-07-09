@@ -15,14 +15,14 @@ import javax.inject.Singleton
 @Module
 class ApiModule {
 
-    @Provides
-    @Singleton
-    fun provideConfigurationRestClient(exceptionMapper: ExceptionMapper): ConfigurationRestClient {
-        return ConfigurationRestClientImpl(exceptionMapper)
-    }
-
-    @Provides
-    fun provideCharacterApi(baseRequest: BaseRequest): CharacterApi {
-        return baseRequest.retrofit.create(CharacterApi::class.java)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideConfigurationRestClient(exceptionMapper: ExceptionMapper): ConfigurationRestClient {
+//        return ConfigurationRestClientImpl(exceptionMapper)
+//    }
+//
+//    @Provides
+//    fun provideCharacterApi(baseRequest: BaseRequest): CharacterApi {
+//        return baseRequest.retrofit.create(CharacterApi::class.java)
+//    }
 }

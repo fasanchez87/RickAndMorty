@@ -1,6 +1,6 @@
 package com.me.rickmorty.util.tools
 
-import com.me.rickmorty.BuildConfig
+//import com.me.rickmorty.BuildConfig
 import com.me.rickmorty.app.ui.base.BaseException
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -10,13 +10,13 @@ class ConfigurationRestClientImpl @Inject constructor(
     override val exceptionMapper: ExceptionMapper
 )  : ConfigurationRestClient {
 
-    override val basePath: String = BuildConfig.BASE_PATH
+    override val basePath: String = "BuildConfig.BASE_PATH"
 
     override val logLevel: HttpLoggingInterceptor.Level
         get() =
-            if (BuildConfig.DEBUG)
-                HttpLoggingInterceptor.Level.BODY
-            else
+            //if (BuildConfig.DEBUG)
+             //   HttpLoggingInterceptor.Level.BODY
+           // else
                 HttpLoggingInterceptor.Level.NONE
 
     override fun handleResponse(response: String) = response

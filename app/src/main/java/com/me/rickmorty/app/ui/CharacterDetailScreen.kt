@@ -20,9 +20,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
+import com.me.core.model.data.CharacterModel
 import com.me.rickmorty.R
 import com.me.rickmorty.app.ui.character.CharacterDetailViewModel
-import com.me.rickmorty.domain.model.CharacterModel
 import com.me.rickmorty.util.extensions.ObserveAsFlowEnhanced
 import timber.log.Timber
 
@@ -31,6 +31,7 @@ fun CharacterDetailScreen(
     idCharacter: String,
     titleAppBar: (String) -> Unit,
     isLoading: (Boolean) -> Unit,
+    onBack: () -> Unit,
     viewModel: CharacterDetailViewModel = hiltViewModel()
 ) {
 

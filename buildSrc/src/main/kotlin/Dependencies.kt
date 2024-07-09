@@ -15,10 +15,10 @@ object Dependencies {
 
     val appDependencies = mutableListOf<String>().apply {
 
-        add("androidx.compose.ui:ui")
-        add("androidx.compose.ui:ui-graphics")
-        add("androidx.compose.ui:ui-tooling-preview")
-        add("androidx.compose.material3:material3")
+//        add("androidx.compose.ui:ui")
+//        add("androidx.compose.ui:ui-graphics")
+//        add("androidx.compose.ui:ui-tooling-preview")
+//        add("androidx.compose.material3:material3")
 
         val vlifecycle = "2.5.1"
         add("androidx.lifecycle:lifecycle-reactivestreams-ktx:$vlifecycle")
@@ -63,8 +63,8 @@ object Dependencies {
         val lifecycle_runtime = "2.6.2"
         add("androidx.lifecycle:lifecycle-runtime-ktx:${lifecycle_runtime}")
 
-        val compose = "1.7.0"
-        add("androidx.activity:activity-compose:${compose}")
+//        val compose = "1.7.0"
+//        add("androidx.activity:activity-compose:${compose}")
 
         val material = "1.10.0"
         add("com.google.android.material:material:${material}")
@@ -99,13 +99,13 @@ object Dependencies {
         add("androidx.paging:paging-runtime-ktx:${paging}")
 
         val coil = "1.4.0"
-        add("io.coil-kt:coil-compose:${coil}")
+       // add("io.coil-kt:coil-compose:${coil}")
 
-        add("androidx.compose.runtime:runtime-livedata:1.6.0")
+        //add("androidx.compose.runtime:runtime-livedata:1.6.0")
 
-        add("androidx.navigation:navigation-compose:2.7.7")
-        add("androidx.hilt:hilt-navigation-compose:1.2.0")
-        add("androidx.lifecycle:lifecycle-runtime-compose:2.6.0")
+//        add("androidx.navigation:navigation-compose:2.7.7")
+//        add("androidx.hilt:hilt-navigation-compose:1.2.0")
+//        add("androidx.lifecycle:lifecycle-runtime-compose:2.6.0")
     }
 
     val appAnnotationProcessor = mutableListOf<String>().apply {
@@ -143,8 +143,8 @@ object Dependencies {
         val firebase = "32.0.0"
         add("com.google.firebase:firebase-bom:$firebase")
 
-        val compose_bom = "2023.03.00"
-        add("androidx.compose:compose-bom:$compose_bom")
+        //val compose_bom = "2023.03.00"
+        //add("androidx.compose:compose-bom:$compose_bom")
     }
 
     val testImplementation = mutableListOf<String>().apply {
@@ -208,12 +208,12 @@ object Dependencies {
     }
 
     object Classpath {
-        const val androidGradlePlugin = "com.android.tools.build:gradle:8.0.1"
-        const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10"
-        const val googleServices = "com.google.gms:google-services:4.3.15"
-        const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.9.5"
-        const val ktlintPlugin = "org.jlleitschuh.gradle:ktlint-gradle:11.3.2"
-        const val hilt = "com.google.dagger:hilt-android-gradle-plugin:2.44"
+//        const val androidGradlePlugin = "com.android.tools.build:gradle:8.0.1"
+//        const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10"
+//        const val googleServices = "com.google.gms:google-services:4.3.15"
+//        const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.9.5"
+//        const val ktlintPlugin = "org.jlleitschuh.gradle:ktlint-gradle:11.3.2"
+//        const val hilt = "com.google.dagger:hilt-android-gradle-plugin:2.44"
     }
 
     fun getVersionName(): String = "VersionName_" + MainSettings.versionName + "_" + MainSettings.versionCode

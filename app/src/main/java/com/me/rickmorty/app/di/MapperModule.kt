@@ -10,8 +10,8 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 @Module
 class MapperModule {
 
-    @Provides
-    fun provideCharacterMapper(): CharacterMapper {
-        return CharacterMapper()
-    }
+//    @Provides
+//    fun provideCharacterMapper(): CharacterMapper {
+//        return CharacterMapper()
+//    }
 }

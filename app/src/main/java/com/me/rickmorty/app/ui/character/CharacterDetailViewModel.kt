@@ -1,9 +1,9 @@
 package com.me.rickmorty.app.ui.character
 
 import androidx.lifecycle.viewModelScope
+import com.me.core.model.data.CharacterModel
+import com.me.data.repository.CharacterRepository
 import com.me.rickmorty.app.ui.base.BaseViewModel
-import com.me.rickmorty.domain.model.CharacterModel
-import com.me.rickmorty.domain.repository.CharacterRepository
 import com.me.rickmorty.util.extensions.toResultState
 import com.me.rickmorty.util.tools.ResultObject
 import dagger.hilt.android.lifecycle.HiltViewModel

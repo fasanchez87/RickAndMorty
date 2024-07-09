@@ -3,10 +3,8 @@ package com.me.rickmorty.app.ui.base
 import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -46,7 +44,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
@@ -63,19 +60,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.me.characters.CharacterScreen
 import com.me.rickmorty.R
 import com.me.rickmorty.app.ui.CharacterDetailScreen
-import com.me.rickmorty.app.ui.CharacterScreen
-import com.me.rickmorty.app.ui.Routes
-import com.me.rickmorty.app.ui.SplashScreen
 import com.me.rickmorty.app.ui.character.BaseActivityViewModel
 import com.me.rickmorty.app.ui.theme.RickMortyTheme
-import com.me.rickmorty.domain.model.CharacterModel
 import com.me.rickmorty.util.extensions.hasNetworkConnection
 import com.me.rickmorty.util.tools.CoreListener
 import com.me.rickmorty.util.tools.ErrorLoginException
 import com.me.rickmorty.util.tools.ResultObject
 import com.me.rickmorty.util.tools.ShowMessageException
+import com.me.routes.CharacterDetailRoute
+import com.me.routes.CharacterRoute
+import com.me.routes.SplashRoute
+import com.me.splash.SplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
@@ -83,7 +82,6 @@ import java.net.UnknownHostException
 
 @AndroidEntryPoint
 class BaseActivityCompose: ComponentActivity(), CoreListener {
-
 
     private val viewModel: BaseActivityViewModel by viewModels()
 
@@ -148,18 +146,26 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
                 //ProvideActivityContent()
                 NavHost(
                     navController = navigator,
-                    startDestination = Routes.Splash.route
+                    startDestination = SplashRoute
                 ) {
-                    composable(route = Routes.Splash.route) {
+                    //New way for navigation with serialization
+                    //Here navigate to Splash screen
+                    composable<SplashRoute> {
                         SplashScreen(navigator) {
                             viewModel.setShowAppBar(it)
                         }
                     }
-                    composable(route = Routes.Characters.route) {
+                    composable<CharacterRoute> {
                         CharacterScreen(
                             onClick = {
+//                                navigator.navigate(
+//                                    //Routes.CharacterDetail.createRoute(it.id)
+//                                   // Routes.CharacterDetail.route
+//                                )
                                 navigator.navigate(
-                                    Routes.CharacterDetail.createRoute(it.id)
+                                    CharacterDetailRoute(
+                                        id = it.id
+                                    )
                                 )
                             },
                             isLoading = {
@@ -180,22 +186,39 @@ class BaseActivityCompose: ComponentActivity(), CoreListener {
                             }
                         )
                     }
-                    composable(
-                        route = Routes.CharacterDetail.route,
-                        arguments = Routes.CharacterDetail.navArguments
-                    ) {
-                        it.arguments?.getString("id")
-                            ?.let { character ->
-                                CharacterDetailScreen(
-                                    idCharacter = character,
-                                    isLoading = {
-                                        viewModel.showLoading(it)
-                                    },
-                                    titleAppBar = {
-                                        viewModel.setTitleAppBar(it)
-                                    }
-                                )
+                    composable<CharacterDetailRoute> { backStackEntry ->
+
+                        val character = backStackEntry.toRoute<CharacterDetailRoute>()
+
+                        CharacterDetailScreen(
+                            idCharacter = character.id,
+                            isLoading = {
+                                viewModel.showLoading(it)
+                            },
+                            onBack = {
+                                navigator.popBackStack()
+                            },
+                            titleAppBar = {
+                                viewModel.setTitleAppBar(it)
                             }
+                        )
+
+
+
+//                        it.arguments?.getString("id")
+//                            ?.let { character ->
+//                                val activity = context as DetailCharacterActivity
+//
+//                                CharacterDetailScreen(
+//                                    idCharacter = character,
+//                                    isLoading = {
+//                                        viewModel.showLoading(it)
+//                                    },
+//                                    titleAppBar = {
+//                                        viewModel.setTitleAppBar(it)
+//                                    }
+//                                )
+//                            }
 
                     }
                 }

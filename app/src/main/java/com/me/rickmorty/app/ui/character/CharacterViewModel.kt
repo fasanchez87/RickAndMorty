@@ -4,7 +4,7 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
 import com.me.rickmorty.app.ui.base.BaseViewModel
 import com.me.rickmorty.domain.model.CharacterModel
-import com.me.rickmorty.domain.repository.CharacterRepository
+//import com.me.rickmorty.domain.repository.CharacterRepository
 import com.me.rickmorty.util.extensions.toResultLiveData
 import com.me.rickmorty.util.extensions.toResultState
 import com.me.rickmorty.util.tools.ResultObject
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterViewModel @Inject constructor(
-    private val characterRepository: CharacterRepository,
+    //private val characterRepository: CharacterRepository,
 ) : BaseViewModel() {
 
     private val _characters = MutableStateFlow<ResultObject<List<CharacterModel>>>(ResultObject.onLoading())
@@ -56,11 +56,11 @@ class CharacterViewModel @Inject constructor(
     fun getCharacters() {
         Timber.tag("CharacterViewModel").d("getCharacters")
         viewModelScope.launch {
-            toResultState {
-                characterRepository.getListCharacter()
-            }.collect { result ->
-                _characters.value = result
-            }
+//            toResultState {
+//                characterRepository.getListCharacter()
+//            }.collect { result ->
+//                _characters.value = result
+//            }
         }
     }
 }

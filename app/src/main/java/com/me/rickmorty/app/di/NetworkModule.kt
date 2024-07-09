@@ -22,62 +22,62 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
 
-    @Provides
-    @Singleton
-    fun provideConfigurationRestClient(exceptionMapper: ExceptionMapper): ConfigurationRestClient {
-        return ConfigurationRestClientImpl(exceptionMapper)
-    }
-
-    @Provides
-    @Singleton
-    fun provideBaseRequest(
-        configuration: ConfigurationRestClient,
-        retrofit: Retrofit
-    ): BaseRequest {
-        return BaseRequestFactory.getFactory(retrofit, configuration).getBaseRequest()
-    }
-
 //    @Provides
 //    @Singleton
-//    fun provideMoshi(): Moshi {
-//        return Moshi.Builder().build()
+//    fun provideConfigurationRestClient(exceptionMapper: ExceptionMapper): ConfigurationRestClient {
+//        return ConfigurationRestClientImpl(exceptionMapper)
 //    }
-
-    @Provides
-    @Singleton
-    fun provideConverterFactory(moshi: Moshi): Converter.Factory {
-        return MoshiConverterFactory.create(moshi).withNullSerialization()
-    }
-
-    @Provides
-    @Singleton
-    fun provideRetrofit(
-        configuration: ConfigurationRestClient,
-        responseInterceptor: ResponseInterceptor,
-        converterFactory: Converter.Factory
-    ): Retrofit {
-        return RetrofitFactory.getFactory(
-            configuration,
-            responseInterceptor,
-            converterFactory
-        ).getRetrofit()
-    }
-
-    @Provides
-    @Singleton
-    fun provideWrapperResponseMapper(): WrapperResponseMapper {
-        return WrapperResponseMapper()
-    }
-
-    @Provides
-    @Singleton
-    fun provideExceptionMapper(wrapperResponseMapper: WrapperResponseMapper): ExceptionMapper {
-        return ExceptionMapper(wrapperResponseMapper)
-    }
-
-    @Provides
-    @Singleton
-    fun provideResponseInterceptor(configuration: ConfigurationRestClient): ResponseInterceptor {
-        return ResponseInterceptor(configuration)
-    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideBaseRequest(
+//        configuration: ConfigurationRestClient,
+//        retrofit: Retrofit
+//    ): BaseRequest {
+//        return BaseRequestFactory.getFactory(retrofit, configuration).getBaseRequest()
+//    }
+//
+////    @Provides
+////    @Singleton
+////    fun provideMoshi(): Moshi {
+////        return Moshi.Builder().build()
+////    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideConverterFactory(moshi: Moshi): Converter.Factory {
+//        return MoshiConverterFactory.create(moshi).withNullSerialization()
+//    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideRetrofit(
+//        configuration: ConfigurationRestClient,
+//        responseInterceptor: ResponseInterceptor,
+//        converterFactory: Converter.Factory
+//    ): Retrofit {
+//        return RetrofitFactory.getFactory(
+//            configuration,
+//            responseInterceptor,
+//            converterFactory
+//        ).getRetrofit()
+//    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideWrapperResponseMapper(): WrapperResponseMapper {
+//        return WrapperResponseMapper()
+//    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideExceptionMapper(wrapperResponseMapper: WrapperResponseMapper): ExceptionMapper {
+//        return ExceptionMapper(wrapperResponseMapper)
+//    }
+//
+//    @Provides
+//    @Singleton
+//    fun provideResponseInterceptor(configuration: ConfigurationRestClient): ResponseInterceptor {
+//        return ResponseInterceptor(configuration)
+//    }
 }
